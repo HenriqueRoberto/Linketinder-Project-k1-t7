@@ -306,21 +306,36 @@ export class EmpresaController {
     const input = document.getElementById(
       "input-competencia-vaga",
     ) as HTMLInputElement;
+    const confirmar = document.getElementById("confirmar-competencia-vaga");
+    const cancelar = document.getElementById("cancelar-competencia-vaga");
 
-    document
-      .getElementById("confirmar-competencia-vaga")
-      ?.addEventListener("click", (e) => {
+    const regex = /^[A-Za-zÀ-ÿ0-9.+#-]{2,30}(?:\s[A-Za-zÀ-ÿ0-9.+#-]{2,30})*$/;
+
+    if (confirmar) {
+      (confirmar as HTMLButtonElement).onclick = (e) => {
         e.preventDefault();
 
         const valor = input.value.trim();
-        if (!valor) return;
+
+        if (!valor) {
+          alert("Digite uma competência");
+          return;
+        }
+
+        if (!regex.test(valor)) {
+          alert(
+            "Digite uma competência válida, como Java, React, Node.js ou C#",
+          );
+          return;
+        }
 
         this.competenciasVaga.push(valor);
         this.renderCompetenciasModal();
 
         popup?.classList.add("hidden");
         input.value = "";
-      });
+      };
+    }
 
     btn?.addEventListener("click", (e) => {
       e.preventDefault();
@@ -328,11 +343,11 @@ export class EmpresaController {
       input.focus();
     });
 
-    document
-      .getElementById("cancelar-competencia-vaga")
-      ?.addEventListener("click", () => popup?.classList.add("hidden"));
+    cancelar?.addEventListener("click", () => {
+      popup?.classList.add("hidden");
+      input.value = "";
+    });
   }
-
   private renderCompetenciasModal(): void {
     const lista = document.getElementById("lista-competencias-vaga");
     const template = document.getElementById(
@@ -343,15 +358,16 @@ export class EmpresaController {
 
     lista.innerHTML = "";
 
-    this.competenciasVaga.forEach((c, index) => {
+    this.competenciasVaga.forEach((competencia, index) => {
       const item = template.cloneNode(true) as HTMLElement;
+
       item.classList.remove("hidden");
+      item.removeAttribute("id");
 
-      item.querySelector(".competencia-texto")!.textContent = c;
+      const texto = item.querySelector(".competencia-texto");
+      if (texto) texto.textContent = competencia;
 
-      item.addEventListener("dblclick", () => {
-        if (!confirm("Remover competência?")) return;
-
+      item.addEventListener("click", () => {
         this.competenciasVaga.splice(index, 1);
         this.renderCompetenciasModal();
       });

@@ -57,32 +57,75 @@
             <div class="dados-candidato">
               <div class="group-dados-candidato">
                 <label for="nome-candidato">Nome</label>
-                <input type="text" id="nome-candidato" />
+                <input
+                  type="text"
+                  id="nome-candidato"
+                  placeholder="Digite o nome do candidato"
+                  pattern="^[A-Za-zÀ-ÿ\s]+$"
+                  title="Digite apenas letras e espaços"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
                 <label for="email-candidato">Email</label>
-                <input type="email" id="email-candidato" />
+                <input
+                  type="email"
+                  id="email-candidato"
+                  placeholder="Digite o email do candidato"
+                  pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+                  title="Email inválido. Ex: nome@email.com"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
                 <label for="cpf-candidato">CPF</label>
-                <input type="text" id="cpf-candidato" />
+                <input
+                  type="text"
+                  id="cpf-candidato"
+                  placeholder="Digite o CPF do candidato"
+                  pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$"
+                  title="Formato: 000.000.000-00"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
                 <label for="idade-candidato">Idade</label>
-                <input type="number" id="idade-candidato" />
+                <input
+                  type="number"
+                  id="idade-candidato"
+                  placeholder="Digite a idade do candidato"
+                  min="0"
+                  max="120"
+                  title="Digite uma idade válida (0 a 120)"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
                 <label for="estado-candidato">Estado</label>
-                <input type="text" id="estado-candidato" />
+                <input
+                  type="text"
+                  id="estado-candidato"
+                  placeholder="Digite o estado"
+                  pattern="^[A-Za-zÀ-ÿ]+(?:[ -][A-Za-zÀ-ÿ]+)*$"
+                  title="Digite o nome do estado"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
                 <label for="cep-candidato">CEP</label>
-                <input type="text" id="cep-candidato" />
+                <input
+                  type="text"
+                  id="cep-candidato"
+                  placeholder="Digite o CEP"
+                  pattern="^\d{5}-\d{3}$"
+                  title="Formato: 00000-000"
+                  required
+                />
               </div>
 
               <div class="group-dados-candidato">
@@ -102,7 +145,14 @@
                 <label for="nova-senha">Nova senha</label>
                 <div class="input-senha">
                   <input type="password" id="nova-senha" />
-                  <button type="button" id="toggle-nova-senha">👁</button>
+                  <button
+                    type="button"
+                    id="toggle-nova-senha"
+                    pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}"
+                    title="Mínimo 6 caracteres, com maiúscula, minúscula, número e símbolo"
+                  >
+                    👁
+                  </button>
                 </div>
               </div>
             </div>
@@ -463,32 +513,72 @@
             <div class="dados-empresa">
               <div class="group-dados-empresa">
                 <label>Nome</label>
-                <input type="text" id="nome-empresa" />
+                <input
+                  type="text"
+                  id="nome-empresa"
+                  pattern="^[A-Za-zÀ-ÿ0-9&.,\- ]+$"
+                  title="Use apenas letras, números e caracteres como . , - &"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">
                 <label>Email</label>
-                <input type="email" id="email-empresa" />
+                <input
+                  type="email"
+                  id="email-empresa"
+                  pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+                  title="Email inválido. Ex: nome@email.com"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">
                 <label>CNPJ</label>
-                <input type="text" id="cnpj-empresa" />
+                <input
+                  type="text"
+                  id="cnpj-empresa"
+                  placeholder="Digite o CNPJ"
+                  pattern="^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$"
+                  title="Formato: 00.000.000/0000-00"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">
                 <label>País</label>
-                <input type="text" id="pais-empresa" />
+                <input
+                  type="text"
+                  id="pais-empresa"
+                  placeholder="Digite o país"
+                  pattern="^[A-Za-zÀ-ÿ]+(?:\s[A-Za-zÀ-ÿ]+)*$"
+                  title="Digite o nome do país (apenas letras)"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">
                 <label>Estado</label>
-                <input type="text" id="estado-empresa" />
+                <input
+                  type="text"
+                  id="estado-empresa"
+                  placeholder="Digite o estado"
+                  pattern="^[A-Za-zÀ-ÿ]+(?:[ -][A-Za-zÀ-ÿ]+)*$"
+                  title="Digite o nome do estado"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">
                 <label>CEP</label>
-                <input type="text" id="cep-empresa" />
+                <input
+                  type="text"
+                  id="cep-empresa"
+                  placeholder="Digite o CEP"
+                  pattern="^\d{5}-\d{3}$"
+                  title="Formato: 00000-000"
+                  required
+                />
               </div>
 
               <div class="group-dados-empresa">

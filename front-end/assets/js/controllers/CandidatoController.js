@@ -113,7 +113,7 @@ export class CandidatoController {
             const item = template.cloneNode(true);
             item.classList.remove("hidden");
             item.querySelector(".competencia-texto").textContent = c;
-            item.addEventListener("dblclick", () => {
+            item.addEventListener("click", () => {
                 if (!confirm("Remover competência?"))
                     return;
                 this.competencias.splice(index, 1);
@@ -123,27 +123,38 @@ export class CandidatoController {
         });
     }
     competenciasEvents() {
-        var _a, _b;
         const btn = document.getElementById("btn-add-competencia");
         const popup = document.getElementById("popup-competencia");
         const input = document.getElementById("input-competencia");
-        btn === null || btn === void 0 ? void 0 : btn.addEventListener("click", () => {
-            popup === null || popup === void 0 ? void 0 : popup.classList.remove("hidden");
+        const confirmar = document.getElementById("confirmar-competencia");
+        const cancelar = document.getElementById("cancelar-competencia");
+        if (!btn || !popup || !input || !confirmar || !cancelar)
+            return;
+        const regex = /^[A-Za-zÀ-ÿ0-9.+#-]{2,30}(?:\s[A-Za-zÀ-ÿ0-9.+#-]{2,30})*$/;
+        btn.onclick = () => {
+            popup.classList.remove("hidden");
             input.value = "";
             input.focus();
-        });
-        (_a = document
-            .getElementById("confirmar-competencia")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", () => {
+        };
+        confirmar.onclick = () => {
             const valor = input.value.trim();
-            if (!valor)
+            if (!valor) {
+                alert("Digite uma competência");
                 return;
+            }
+            if (!regex.test(valor)) {
+                alert("Digite uma competência válida (ex: Java, React, Node.js)");
+                return;
+            }
             this.competencias.push(valor);
             this.renderCompetencias();
-            popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden");
+            popup.classList.add("hidden");
             input.value = "";
-        });
-        (_b = document
-            .getElementById("cancelar-competencia")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden"));
+        };
+        cancelar.onclick = () => {
+            popup.classList.add("hidden");
+            input.value = "";
+        };
     }
     // ================= MATCH =================
     initMatchVagas() {

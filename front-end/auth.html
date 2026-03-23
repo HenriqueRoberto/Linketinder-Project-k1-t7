@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="./assets/css/utils.css" />
     <link rel="stylesheet" href="./assets/css/components.css" />
   </head>
-  </head>
   <body>
     <div class="container">
       <section class="banner-text">
@@ -26,6 +25,8 @@
               <input
                 type="email"
                 id="email"
+                pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+                title="Email inválido. Ex: nome@email.com"
                 placeholder="Digite seu email"
                 required
               />
@@ -62,6 +63,8 @@
                 type="text"
                 id="nome-empresa"
                 placeholder="Digite o nome da empresa"
+                pattern="^[A-Za-zÀ-ÿ0-9&.,\- ]+$"
+                title="Use apenas letras, números e caracteres como . , - &"
                 required
               />
             </div>
@@ -70,6 +73,8 @@
               <input
                 type="email"
                 id="email-empresa"
+                pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+                title="Email inválido. Ex: nome@email.com"
                 placeholder="Digite o email da empresa"
                 required
               />
@@ -80,6 +85,8 @@
                 type="text"
                 id="cnpj"
                 placeholder="Digite o CNPJ"
+                pattern="^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$"
+                title="Formato: 00.000.000/0000-00"
                 required
               />
             </div>
@@ -89,6 +96,8 @@
                 type="text"
                 id="pais-empresa"
                 placeholder="Digite o país"
+                pattern="^[A-Za-zÀ-ÿ]+(?:\s[A-Za-zÀ-ÿ]+)*$"
+                title="Digite o nome do país (apenas letras)"
                 required
               />
             </div>
@@ -98,12 +107,21 @@
                 type="text"
                 id="estado-empresa"
                 placeholder="Digite o estado"
+                pattern="^[A-Za-zÀ-ÿ]+(?:[ -][A-Za-zÀ-ÿ]+)*$"
+                title="Digite o nome do estado"
                 required
               />
             </div>
             <div class="form-group">
               <label for="cep-empresa">CEP</label>
-              <input type="text" id="cep-empresa" placeholder="Digite o CEP" />
+              <input
+                type="text"
+                id="cep-empresa"
+                placeholder="Digite o CEP"
+                pattern="^\d{5}-\d{3}$"
+                title="Formato: 00000-000"
+                required
+              />
             </div>
             <div class="form-group">
               <label for="descricao-empresa">Descrição</label>
@@ -118,6 +136,8 @@
               <input
                 type="password"
                 id="senha-empresa"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}"
+                title="Mínimo 6 caracteres, com maiúscula, minúscula, número e símbolo"
                 placeholder="Digite a senha"
                 required
               />
@@ -136,6 +156,8 @@
                 type="text"
                 id="nome-candidato"
                 placeholder="Digite o nome do candidato"
+                pattern="^[A-Za-zÀ-ÿ\s]+$"
+                title="Digite apenas letras e espaços"
                 required
               />
             </div>
@@ -144,6 +166,8 @@
               <input
                 type="email"
                 id="email-candidato"
+                pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+                title="Email inválido. Ex: nome@email.com"
                 placeholder="Digite o email do candidato"
                 required
               />
@@ -154,6 +178,8 @@
                 type="text"
                 id="cpf-candidato"
                 placeholder="Digite o CPF do candidato"
+                pattern="^\d{3}\.\d{3}\.\d{3}-\d{2}$"
+                title="Formato: 000.000.000-00"
                 required
               />
             </div>
@@ -163,6 +189,9 @@
                 type="number"
                 id="idade-candidato"
                 placeholder="Digite a idade do candidato"
+                min="0"
+                max="120"
+                title="Digite uma idade válida (0 a 120)"
                 required
               />
             </div>
@@ -172,6 +201,8 @@
                 type="text"
                 id="estado-candidato"
                 placeholder="Digite o estado"
+                pattern="^[A-Za-zÀ-ÿ]+(?:[ -][A-Za-zÀ-ÿ]+)*$"
+                title="Digite o nome do estado"
                 required
               />
             </div>
@@ -181,6 +212,8 @@
                 type="text"
                 id="cep-candidato"
                 placeholder="Digite o CEP"
+                pattern="^\d{5}-\d{3}$"
+                title="Formato: 00000-000"
               />
             </div>
             <div class="form-group">
@@ -196,6 +229,8 @@
               <input
                 type="password"
                 id="senha-candidato"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}"
+                title="Mínimo 6 caracteres, com maiúscula, minúscula, número e símbolo"
                 placeholder="Digite a senha"
                 required
               />
@@ -206,10 +241,9 @@
         </section>
       </main>
     </div>
-        
+
     <script type="module" src="./assets/js/ui/AuthPagination.js"></script>
     <script type="module" src="./assets/js/auth/AuthController.js"></script>
     <script type="module" src="./assets/js/auth/AuthService.js"></script>
-
   </body>
 </html>

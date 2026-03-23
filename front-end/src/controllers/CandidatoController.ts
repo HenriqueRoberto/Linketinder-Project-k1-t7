@@ -168,7 +168,7 @@ export class CandidatoController {
 
       item.querySelector(".competencia-texto")!.textContent = c;
 
-      item.addEventListener("dblclick", () => {
+      item.addEventListener("click", () => {
         if (!confirm("Remover competência?")) return;
 
         this.competencias.splice(index, 1);
@@ -185,31 +185,46 @@ export class CandidatoController {
     const input = document.getElementById(
       "input-competencia",
     ) as HTMLInputElement;
+    const confirmar = document.getElementById(
+      "confirmar-competencia",
+    ) as HTMLButtonElement;
+    const cancelar = document.getElementById("cancelar-competencia");
 
-    btn?.addEventListener("click", () => {
-      popup?.classList.remove("hidden");
+    if (!btn || !popup || !input || !confirmar || !cancelar) return;
+
+    const regex = /^[A-Za-zÀ-ÿ0-9.+#-]{2,30}(?:\s[A-Za-zÀ-ÿ0-9.+#-]{2,30})*$/;
+
+    btn.onclick = () => {
+      popup.classList.remove("hidden");
       input.value = "";
       input.focus();
-    });
+    };
 
-    document
-      .getElementById("confirmar-competencia")
-      ?.addEventListener("click", () => {
-        const valor = input.value.trim();
-        if (!valor) return;
+    confirmar.onclick = () => {
+      const valor = input.value.trim();
 
-        this.competencias.push(valor);
-        this.renderCompetencias();
+      if (!valor) {
+        alert("Digite uma competência");
+        return;
+      }
 
-        popup?.classList.add("hidden");
-        input.value = "";
-      });
+      if (!regex.test(valor)) {
+        alert("Digite uma competência válida (ex: Java, React, Node.js)");
+        return;
+      }
 
-    document
-      .getElementById("cancelar-competencia")
-      ?.addEventListener("click", () => popup?.classList.add("hidden"));
+      this.competencias.push(valor);
+      this.renderCompetencias();
+
+      popup.classList.add("hidden");
+      input.value = "";
+    };
+
+    cancelar.onclick = () => {
+      popup.classList.add("hidden");
+      input.value = "";
+    };
   }
-
   // ================= MATCH =================
 
   private initMatchVagas(): void {

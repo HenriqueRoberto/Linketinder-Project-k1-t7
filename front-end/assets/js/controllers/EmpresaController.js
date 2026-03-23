@@ -225,28 +225,39 @@ export class EmpresaController {
     }
     // ================= COMPETENCIAS =================
     competenciasModal() {
-        var _a, _b;
         const btn = document.getElementById("btn-add-competencia-vaga");
         const popup = document.getElementById("popup-competencia-vaga");
         const input = document.getElementById("input-competencia-vaga");
-        (_a = document
-            .getElementById("confirmar-competencia-vaga")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const valor = input.value.trim();
-            if (!valor)
-                return;
-            this.competenciasVaga.push(valor);
-            this.renderCompetenciasModal();
-            popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden");
-            input.value = "";
-        });
+        const confirmar = document.getElementById("confirmar-competencia-vaga");
+        const cancelar = document.getElementById("cancelar-competencia-vaga");
+        const regex = /^[A-Za-zÀ-ÿ0-9.+#-]{2,30}(?:\s[A-Za-zÀ-ÿ0-9.+#-]{2,30})*$/;
+        if (confirmar) {
+            confirmar.onclick = (e) => {
+                e.preventDefault();
+                const valor = input.value.trim();
+                if (!valor) {
+                    alert("Digite uma competência");
+                    return;
+                }
+                if (!regex.test(valor)) {
+                    alert("Digite uma competência válida, como Java, React, Node.js ou C#");
+                    return;
+                }
+                this.competenciasVaga.push(valor);
+                this.renderCompetenciasModal();
+                popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden");
+                input.value = "";
+            };
+        }
         btn === null || btn === void 0 ? void 0 : btn.addEventListener("click", (e) => {
             e.preventDefault();
             popup === null || popup === void 0 ? void 0 : popup.classList.remove("hidden");
             input.focus();
         });
-        (_b = document
-            .getElementById("cancelar-competencia-vaga")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden"));
+        cancelar === null || cancelar === void 0 ? void 0 : cancelar.addEventListener("click", () => {
+            popup === null || popup === void 0 ? void 0 : popup.classList.add("hidden");
+            input.value = "";
+        });
     }
     renderCompetenciasModal() {
         const lista = document.getElementById("lista-competencias-vaga");
@@ -254,13 +265,14 @@ export class EmpresaController {
         if (!lista || !template)
             return;
         lista.innerHTML = "";
-        this.competenciasVaga.forEach((c, index) => {
+        this.competenciasVaga.forEach((competencia, index) => {
             const item = template.cloneNode(true);
             item.classList.remove("hidden");
-            item.querySelector(".competencia-texto").textContent = c;
-            item.addEventListener("dblclick", () => {
-                if (!confirm("Remover competência?"))
-                    return;
+            item.removeAttribute("id");
+            const texto = item.querySelector(".competencia-texto");
+            if (texto)
+                texto.textContent = competencia;
+            item.addEventListener("click", () => {
                 this.competenciasVaga.splice(index, 1);
                 this.renderCompetenciasModal();
             });
