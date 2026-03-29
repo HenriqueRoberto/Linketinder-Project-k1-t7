@@ -3,14 +3,14 @@
 **Autor:** Henrique Roberto dos Santos
 
 ---
-
 ## Descrição
 
 Este é o projeto do sistema **Linketinder**, uma aplicação inspirada na ideia de unir o conceito de perfis profissionais (LinkedIn) com a lógica de visualização interativa de perfis (Tinder).
 
-O objetivo é permitir a interação entre **candidatos** e **empresas** por meio de um menu de terminal. O sistema possibilita que usuários realizem cadastro, login e demonstrem interesse (Like) em outros perfis, gerando um "Match" automático quando a reciprocidade é detectada.
+O objetivo é permitir a interação entre **candidatos** e **empresas** por meio de um menu de terminal. O sistema possibilita que usuários realizem cadastro, login e demonstrem interesse (Like) em vagas ou candidatos, gerando um "Match" automático quando a reciprocidade é detectada entre candidato e vaga.
 
 O sistema foi desenvolvido em **Groovy**, utilizando **POO**, **Interfaces** e o padrão **MVC (Model–View–Controller)**.
+
 
 ## Front-end
 
@@ -20,16 +20,35 @@ O front-end do projeto foi desenvolvido utilizando **HTML, CSS e TypeScript**, s
 ---
 # Funcionalidades
 
-- **Sistema de Login:** Autenticação de usuários (Candidatos e Empresas) via e-mail e senha.
-- **Cadastro Dinâmico:** Fluxo de cadastro com validação de e-mail único, impedindo registros duplicados.
-- **Gerenciamento de Competências:** Permite adicionar novas competências ao perfil durante a sessão ativa.
-- **Perfil Próprio:** Visualização detalhada dos dados da conta logada.
-- **Exploração Interativa:** Navegação de perfis um a um com as ações:
-    - **[L] Like:** Demonstrar interesse no perfil.
-    - **[P] Próximo:** Pular para o próximo perfil.
-    - **[S] Sair:** Retornar ao menu principal.
-- **Sistema de Match:** Identificação em tempo real de interesses mútuos.
-- **Lista de Matches:** Exibição de todos os perfis onde houve reciprocidade.
+### Candidato
+- **Login e Cadastro:** Autenticação via e-mail e senha, com validação de e-mail único.
+- **Perfil Próprio:** Visualização e edição dos dados da conta logada.
+- **Gerenciamento de Competências:** CRUD completo de competências do perfil (adicionar, editar, excluir, listar).
+- **Exploração de Vagas:** Navegação por vagas disponíveis uma a uma, com as ações:
+  - **[L] Like:** Demonstrar interesse na vaga.
+  - **[P] Próximo:** Pular para a próxima vaga.
+  - **[S] Sair:** Retornar ao menu principal.
+- **Sistema de Match:** Identificação em tempo real de match entre candidato e vaga.
+- **Lista de Matches:** Exibição das vagas com match, incluindo os dados completos da empresa responsável.
+
+### Empresa
+- **Login e Cadastro:** Autenticação via e-mail e senha, com validação de e-mail único.
+- **Perfil Próprio:** Visualização e edição dos dados da conta logada.
+- **Gerenciamento de Vagas:** CRUD completo de vagas (criar, editar, excluir, listar).
+- **Competências por Vaga:** Gerenciamento de competências dentro de cada vaga (adicionar, excluir, listar).
+- **Exploração de Candidatos:** Visualização de candidatos um a um com dados restritos (descrição, competências, estado e CEP — sem nome, CPF, idade ou e-mail) com as ações:
+  - **[L] Like:** Demonstrar interesse na vaga.
+  - **[P] Próximo:** Pular para a próxima vaga.
+  - **[S] Sair:** Retornar ao menu principal.
+- **Sistema de Match:** Identificação em tempo real de match ao curtir um candidato.
+- **Lista de Matches por Vaga:** Exibição das vagas com match e os candidatos correspondentes, com dados completos.
+
+### Regra de Match
+O match ocorre quando:
+1. A empresa dá like no candidato.
+2. O candidato dá like em uma vaga dessa mesma empresa.
+
+O match é vinculado ao **id único da vaga**. Se a vaga for excluída, o match some automaticamente.
 
 ---
 
@@ -37,7 +56,10 @@ O front-end do projeto foi desenvolvido utilizando **HTML, CSS e TypeScript**, s
 - Nome, E-mail, CPF, Idade, Estado, CEP, Descrição pessoal e Competências.
 
 ### Dados da Empresa
-- Nome, E-mail corporativo, CNPJ, País, Estado, CEP, Descrição da empresa e Competências esperadas.
+- Nome, E-mail corporativo, CNPJ, País, Estado, CEP e Descrição da empresa.
+
+### Dados da Vaga
+- Descrição, Horário, Localização, Remuneração e Competências exigidas.
 
 ---
 
