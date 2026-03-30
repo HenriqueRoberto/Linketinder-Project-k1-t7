@@ -91,7 +91,7 @@ class MenuView {
     static void exibirCandidatoRestrito(Candidato candidato) {
         println "\n------------------------"
         String compTexto = (candidato.competencias == null || candidato.competencias.isEmpty()) ?
-                "sem competências cadastradas" : candidato.competencias.join(", ")
+                "sem competências cadastradas" : candidato.competencias.collect { it.nome }.join(", ")
 
         println "Descrição: " + (candidato.descricao ?: "Sem descrição")
         println "Competências: " + compTexto
@@ -101,12 +101,16 @@ class MenuView {
 
     // Exibe dados completos do candidato (usado na tela de match da empresa)
     static void exibirCandidatoCompleto(Candidato candidato) {
+        String compTexto = (candidato.competencias == null || candidato.competencias.isEmpty()) ?
+                "sem competências cadastradas" : candidato.competencias.collect { it.nome }.join(", ")
+
         println "\n  Nome: " + candidato.nome
         println "  CPF: " + candidato.cpf
         println "  Idade: " + candidato.idade
         println "  Estado: " + candidato.estado
         println "  CEP: " + candidato.cep
         println "  Descrição: " + (candidato.descricao ?: "Sem descrição")
+        println "  Competências: " + compTexto
     }
 
     // Exibe os matches do candidato: vaga + empresa

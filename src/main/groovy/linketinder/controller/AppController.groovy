@@ -2,6 +2,7 @@ package linketinder.controller
 
 import linketinder.service.*
 import linketinder.model.*
+import linketinder.model.Competencia
 import linketinder.view.MenuView
 import java.util.Scanner
 
@@ -108,7 +109,7 @@ class AppController {
     // Gerencia competências do candidato logado (CRUD completo: adicionar, editar, excluir, listar)
     private static void gerenciarCompetencias() {
         while (true) {
-            List<String> comps = usuarioLogado.competencias
+            List<Competencia> comps = usuarioLogado.competencias
 
             MenuView.menuCompetencias()
             int op = scanner.nextInt()
@@ -119,7 +120,7 @@ class AppController {
                     print "Nova competência: "
                     String entrada = scanner.nextLine().trim()
                     if (!entrada.isEmpty()) {
-                        comps.add(entrada)
+                        comps.add(new Competencia(entrada))
                         println "Sucesso: '" + entrada + "' adicionada!"
                     }
                     break
@@ -136,11 +137,11 @@ class AppController {
                         println "Erro: Número inválido."
                         break
                     }
-                    print "Novo valor [" + comps[indiceE] + "]: "
+                    print "Novo valor [" + comps[indiceE].nome + "]: "
                     String novoValor = scanner.nextLine().trim()
                     if (!novoValor.isEmpty()) {
-                        String antiga = comps[indiceE]
-                        comps[indiceE] = novoValor
+                        String antiga = comps[indiceE].nome
+                        comps[indiceE].nome = novoValor
                         println "Sucesso: '" + antiga + "' alterada para '" + novoValor + "'!"
                     }
                     break
@@ -156,7 +157,7 @@ class AppController {
                     if (indiceX < 0 || indiceX >= comps.size()) {
                         println "Erro: Número inválido."
                     } else {
-                        String removida = comps.remove(indiceX)
+                        String removida = comps.remove(indiceX).nome
                         println "Sucesso: '" + removida + "' removida!"
                     }
                     break
@@ -165,7 +166,7 @@ class AppController {
                     if (comps.isEmpty()) {
                         println "Nenhuma competência cadastrada."
                     } else {
-                        comps.eachWithIndex { comp, i -> println "${i + 1}. ${comp}" }
+                        comps.eachWithIndex { comp, i -> println "${i + 1}. ${comp.nome}" }
                     }
                     break
                 case 0: return
@@ -294,21 +295,22 @@ class AppController {
 
     private static void criarVaga() {
         println "\n--- NOVA VAGA ---"
+        print "Nome: "; String nome = scanner.nextLine().trim()
         print "Descrição: "; String desc = scanner.nextLine().trim()
         print "Horário: "; String horario = scanner.nextLine().trim()
         print "Localização: "; String local = scanner.nextLine().trim()
         print "Remuneração: "; String remun = scanner.nextLine().trim()
 
-        if (desc.isEmpty() || horario.isEmpty() || local.isEmpty() || remun.isEmpty()) {
+        if (nome.isEmpty() || desc.isEmpty() || horario.isEmpty() || local.isEmpty() || remun.isEmpty()) {
             println "Erro: Todos os campos são obrigatórios."
             return
         }
 
         // Empresa gerencia competências dentro da vaga
-        List<String> competencias = []
+        List<Competencia> competencias = []
         gerenciarCompetenciasVaga(competencias)
 
-        Vaga nova = new Vaga(desc, horario, local, remun, competencias, usuarioLogado.id)
+        Vaga nova = new Vaga(nome, desc, horario, local, remun, competencias, usuarioLogado.id)
 
         try {
             EmpresaService.criarVaga(usuarioLogado.id, nova)
@@ -327,7 +329,7 @@ class AppController {
         }
 
         println "\n--- SUAS VAGAS ---"
-        vagas.eachWithIndex { v, i -> println "${i + 1}. ${v.descricao} | ${v.localizacao}" }
+        vagas.eachWithIndex { v, i -> println "${i + 1}. ${v.nome} | ${v.localizacao}" }
 
         print "Número da vaga para editar: "
         int num = scanner.nextInt()
@@ -340,25 +342,27 @@ class AppController {
         }
 
         Vaga vaga = vagas[indice]
-        println "\n--- EDITANDO: " + vaga.descricao + " ---"
+        println "\n--- EDITANDO: " + vaga.nome + " ---"
         println "Deixe em branco para manter o valor atual."
 
+        print "Nome [" + vaga.nome + "]: "; String nome = scanner.nextLine().trim()
         print "Descrição [" + vaga.descricao + "]: "; String desc = scanner.nextLine().trim()
         print "Horário [" + vaga.horario + "]: "; String horario = scanner.nextLine().trim()
         print "Localização [" + vaga.localizacao + "]: "; String local = scanner.nextLine().trim()
         print "Remuneração [" + vaga.remuneracao + "]: "; String remun = scanner.nextLine().trim()
 
         // Mantém o valor atual se deixado em branco
+        String novoNome    = nome.isEmpty()    ? vaga.nome        : nome
         String novaDesc    = desc.isEmpty()    ? vaga.descricao   : desc
         String novoHorario = horario.isEmpty() ? vaga.horario     : horario
         String novoLocal   = local.isEmpty()   ? vaga.localizacao : local
         String novoRemun   = remun.isEmpty()   ? vaga.remuneracao : remun
 
         // Mantém as competências existentes e permite gerenciá-las dentro da vaga
-        List<String> competencias = new ArrayList<>(vaga.competencias)
+        List<Competencia> competencias = new ArrayList<>(vaga.competencias)
         gerenciarCompetenciasVaga(competencias)
 
-        Vaga atualizada = new Vaga(novaDesc, novoHorario, novoLocal, novoRemun, competencias, usuarioLogado.id)
+        Vaga atualizada = new Vaga(novoNome, novaDesc, novoHorario, novoLocal, novoRemun, competencias, usuarioLogado.id)
 
         try {
             EmpresaService.editarVaga(usuarioLogado.id, indice, atualizada)
@@ -369,7 +373,7 @@ class AppController {
     }
 
     // Empresa gerencia competências dentro de uma vaga (adicionar, excluir, listar)
-    private static void gerenciarCompetenciasVaga(List<String> competencias) {
+    private static void gerenciarCompetenciasVaga(List<Competencia> competencias) {
         while (true) {
             MenuView.menuCompetenciasVaga()
             int op = scanner.nextInt()
@@ -380,7 +384,7 @@ class AppController {
                     print "Nova competência: "
                     String entrada = scanner.nextLine().trim()
                     if (!entrada.isEmpty()) {
-                        competencias.add(entrada)
+                        competencias.add(new Competencia(entrada))
                         println "Sucesso: '" + entrada + "' adicionada!"
                     }
                     break
@@ -396,7 +400,7 @@ class AppController {
                     if (idx < 0 || idx >= competencias.size()) {
                         println "Erro: Número inválido."
                     } else {
-                        String removida = competencias.remove(idx)
+                        String removida = competencias.remove(idx).nome
                         println "Sucesso: '" + removida + "' removida!"
                     }
                     break
@@ -405,7 +409,7 @@ class AppController {
                     if (competencias.isEmpty()) {
                         println "Nenhuma competência cadastrada."
                     } else {
-                        competencias.eachWithIndex { comp, i -> println "${i + 1}. ${comp}" }
+                        competencias.eachWithIndex { comp, i -> println "${i + 1}. ${comp.nome}" }
                     }
                     break
                 case 0: return
@@ -422,7 +426,7 @@ class AppController {
         }
 
         println "\n--- SUAS VAGAS ---"
-        vagas.eachWithIndex { v, i -> println "${i + 1}. ${v.descricao} | ${v.localizacao}" }
+        vagas.eachWithIndex { v, i -> println "${i + 1}. ${v.nome} | ${v.localizacao}" }
 
         print "Número da vaga para excluir: "
         int num = scanner.nextInt()
